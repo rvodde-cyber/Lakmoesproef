@@ -1,1 +1,212 @@
-{\n  \"questions\": [\n    {\n      \"id\": 1,\n      \"question\": \"What are the key attributes of an Audit Strategist?\",\n      \"tags\": [\n        \"question_A_B\",\n        \"virtue\"\n      ],\n      \"threshold_value\": 5\n    },\n    {\n      \"id\": 2,\n      \"question\": \"How do you evaluate the effectiveness of an Audit Strategist?\",\n      \"tags\": [\n        \"question_C\",\n        \"virtue\"\n      ],\n      \"threshold_value\": 4\n    },\n    {\n      \"id\": 3,\n      \"question\": \"What methods can be used to enhance skills in auditing strategies?\",\n      \"tags\": [\n        \"seven_s\",\n        \"virtue\"\n      ],\n      \"threshold_value\": 5\n    }\n  ]\n}
+[
+  {
+    "id": "filter_01",
+    "domain": "Kaders & Normen",
+    "seven_s": "Strategy",
+    "virtue": "Helderheid",
+    "source": "Kaptein (2013)",
+    "question_A_B": "In hoeverre zijn de morele kaders binnen de strategische doelstellingen van de organisatie expliciet gedefinieerd en bekend bij het management?",
+    "question_C": "Wordt er in de bestuurskamer ook daadwerkelijk gestuurd op deze kaders wanneer de kwartaalcijfers zwaar onder druk staan?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_02",
+    "domain": "Sociale Context",
+    "seven_s": "Style",
+    "virtue": "Bespreekbaarheid",
+    "source": "Kaptein (2013) / Karssing",
+    "question_A_B": "In welke mate is het leiderschap proactief toegankelijk voor tegenspraak en ethische dilemma's vanuit de werkvloer?",
+    "question_C": "Wat was de concrete en zichtbare consequentie voor de laatste medewerker die een kritisch ethisch risico aankaartte?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_03",
+    "domain": "Operatie & Integriteit",
+    "seven_s": "Systems",
+    "virtue": "Sanctioneerbaarheid",
+    "source": "Kaptein (2013)",
+    "question_A_B": "Zijn de systemen voor compliance en incidentmelding transparant, veilig en onafhankelijk ingericht?",
+    "question_C": "Blijven de sancties gelijk wanneer een commerciële 'high-performer' of senior manager de integriteitsregels overtreedt?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_04",
+    "domain": "Team & Cultuur",
+    "seven_s": "Staff",
+    "virtue": "Steun",
+    "source": "Gallup",
+    "question_A_B": "Ervaren medewerkers voldoende psychologische veiligheid en steun van hun direct leidinggevende om professioneel en integer te handelen?",
+    "question_C": "Wordt een medewerker die weigert een ethisch dubieuze taak uit te voeren, publiekelijk gesteund of stilletjes gepasseerd voor promotie?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_05",
+    "domain": "Kaders & Normen",
+    "seven_s": "Shared Values",
+    "virtue": "Consistentie",
+    "source": "Karssing / Peters & Waterman",
+    "question_A_B": "Komen de gecommuniceerde kernwaarden van de organisatie structureel overeen met de dagelijkse besluitvorming op de werkvloer?",
+    "question_C": "Welke bestuurlijke beslissing van de afgelopen maand ging lijnrecht in tegen de kernwaarden om operationele snelheid of winst te behouden?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_06",
+    "domain": "Operatie & Integriteit",
+    "seven_s": "Structure",
+    "virtue": "Zichtbaarheid",
+    "source": "Kaptein (2013)",
+    "question_A_B": "Is het toezicht op ethisch handelen zodanig gestructureerd dat risicovol gedrag tijdig wordt gesignaleerd door onafhankelijke actoren?",
+    "question_C": "Hoeveel incidenten worden er momenteel intern toegedekt omdat de formele rapportagelijnen conflicteren met commerciële belangen?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_07",
+    "domain": "Kaders & Normen",
+    "seven_s": "Skills",
+    "virtue": "Uitvoerbaarheid",
+    "source": "Karssing",
+    "question_A_B": "Beschikken medewerkers over de juiste training en middelen om complexe ethische afwegingen in hun dagelijks werk te maken?",
+    "question_C": "Wordt morele competentie daadwerkelijk getoetst tijdens de werving, of ligt de focus uitsluitend op harde, commerciële vaardigheden?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_08",
+    "domain": "Kaders & Normen",
+    "seven_s": "Strategy",
+    "virtue": "Consistentie",
+    "source": "Kaptein (2013)",
+    "question_A_B": "Is de langetermijnstrategie vrij van perverse prikkels die onethisch gedrag op de korte termijn uitlokken?",
+    "question_C": "In hoeverre dwingen de huidige KPI's managers om de randen van de integriteit op te zoeken om hun bonussen te halen?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_09",
+    "domain": "Operatie & Integriteit",
+    "seven_s": "Structure",
+    "virtue": "Helderheid",
+    "source": "Peters & Waterman",
+    "question_A_B": "Zijn de verantwoordelijkheden rondom integriteit en compliance helder belegd binnen de organisatiestructuur?",
+    "question_C": "Als er vandaag een groot schandaal uitbreekt, wijzen afdelingen dan naar elkaar in plaats van direct verantwoordelijkheid te nemen?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_10",
+    "domain": "Sociale Context",
+    "seven_s": "Systems",
+    "virtue": "Zichtbaarheid",
+    "source": "Kaptein (2013)",
+    "question_A_B": "Werken de evaluatie- en beloningssystemen transparant, en is zichtbaar welk gedrag wordt beloond?",
+    "question_C": "Worden promoties achter gesloten deuren verdeeld op basis van netwerk en loyaliteit, in plaats van op meetbare integriteit?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_11",
+    "domain": "Sociale Context",
+    "seven_s": "Style",
+    "virtue": "Steun",
+    "source": "Gallup",
+    "question_A_B": "Geeft de directie actief het goede voorbeeld (tone at the top) bij het navigeren van morele grijze gebieden?",
+    "question_C": "Zijn er voorbeelden waarbij de directie zelf de regels omboog met het argument dat 'het doel de middelen heiligt'?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_12",
+    "domain": "Team & Cultuur",
+    "seven_s": "Staff",
+    "virtue": "Bespreekbaarheid",
+    "source": "Karssing",
+    "question_A_B": "Durven teamleden elkaar onderling aan te spreken op onprofessioneel of normoverschrijdend gedrag?",
+    "question_C": "Heerst er een afrekencultuur of roddelcircuit waardoor open feedback steevast wordt afgestraft?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_13",
+    "domain": "Operatie & Integriteit",
+    "seven_s": "Skills",
+    "virtue": "Sanctioneerbaarheid",
+    "source": "Kaptein (2013)",
+    "question_A_B": "Is het management bekwaam in het voeren van lastige correctiegesprekken bij integriteitsschendingen?",
+    "question_C": "Kijken leidinggevenden bewust de andere kant op omdat ze de confrontatie met dominante medewerkers niet aan durven?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_14",
+    "domain": "Kaders & Normen",
+    "seven_s": "Shared Values",
+    "virtue": "Uitvoerbaarheid",
+    "source": "Peters & Waterman",
+    "question_A_B": "Zijn de gedeelde waarden praktisch vertaald naar de dagelijkse werkrealiteit, zodat ze werkbaar zijn voor iedereen?",
+    "question_C": "Zijn de kernwaarden slechts holle marketingtermen die in de praktijk onmogelijk na te leven zijn gezien de hoge werkdruk?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_15",
+    "domain": "Kaders & Normen",
+    "seven_s": "Strategy",
+    "virtue": "Uitvoerbaarheid",
+    "source": "Kaptein (2013)",
+    "question_A_B": "Houdt de bedrijfsstrategie rekening met de realistische capaciteit en middelen van de medewerkers, zonder hen te overvragen?",
+    "question_C": "Worden er onrealistische groeidoelstellingen opgelegd die medewerkers dwingen om kwaliteits- en veiligheidseisen te negeren?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_16",
+    "domain": "Operatie & Integriteit",
+    "seven_s": "Structure",
+    "virtue": "Sanctioneerbaarheid",
+    "source": "Karssing",
+    "question_A_B": "Faciliteert de organisatiestructuur een objectieve afhandeling van sancties, onafhankelijk van hiërarchische lijnen?",
+    "question_C": "Kan een C-level executive een lopend integriteitsonderzoek naar zijn eigen afdeling traineren of stopzetten?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_17",
+    "domain": "Sociale Context",
+    "seven_s": "Systems",
+    "virtue": "Steun",
+    "source": "Gallup",
+    "question_A_B": "Zijn de IT- en datasystemen zo ingericht dat ze medewerkers actief ondersteunen bij het maken van foutloze en integere keuzes?",
+    "question_C": "Zijn de systemen zo bureaucratisch en traag dat medewerkers actief 'workarounds' moeten creëren, waarmee ze de regels overtreden?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_18",
+    "domain": "Sociale Context",
+    "seven_s": "Style",
+    "virtue": "Zichtbaarheid",
+    "source": "Kaptein (2013)",
+    "question_A_B": "Is de communicatiestijl van het management dusdanig transparant dat ethische successen en falen zichtbaar worden gedeeld?",
+    "question_C": "Wordt falen structureel onder het tapijt geveegd ('damage control') in plaats van gebruikt als zichtbaar leermoment voor de organisatie?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_19",
+    "domain": "Team & Cultuur",
+    "seven_s": "Staff",
+    "virtue": "Consistentie",
+    "source": "Karssing",
+    "question_A_B": "Wordt diversiteit in perspectieven consistent gewaardeerd binnen teams om tunnelvisie te voorkomen?",
+    "question_C": "Worden medewerkers met een afwijkende professionele mening uiteindelijk altijd geïsoleerd of uitgewerkt door de dominante groep?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_20",
+    "domain": "Operatie & Integriteit",
+    "seven_s": "Skills",
+    "virtue": "Helderheid",
+    "source": "Peters & Waterman",
+    "question_A_B": "Is voor iedereen volstrekt helder welke specifieke professionele vaardigheden en certificeringen vereist zijn voor hun rol?",
+    "question_C": "Worden complexe taken regelmatig toegewezen aan ongekwalificeerd personeel om kosten te besparen, met alle risico's van dien?",
+    "threshold": 3
+  },
+  {
+    "id": "filter_21",
+    "domain": "Team & Cultuur",
+    "seven_s": "Shared Values",
+    "virtue": "Bespreekbaarheid",
+    "source": "Kaptein (2013)",
+    "question_A_B": "Fungeert de bedrijfscultuur als een veilige haven waarin morele twijfels proactief op tafel gelegd kunnen worden?",
+    "question_C": "Is cynisme op de werkvloer inmiddels het belangrijkste overlevingsmechanisme geworden tegenover de heersende bedrijfspolitiek?",
+    "threshold": 3
+  }
+]
