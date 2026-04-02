@@ -1,4 +1,5 @@
 import React from 'react';
+import AuditSurvey from './components/AuditSurvey';
 export default function App() {
   return (
     <div style={{ padding: 24 }}>
