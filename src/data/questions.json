@@ -1,35 +1,11 @@
-[
-  {
-    "id": "filter_01",
-    "domain": "Kaders & Normen",
-    "seven_s": "Strategy",
-    "virtue": "Helderheid",
-    "source": "Kaptein (2013)",
-    "question": "In hoeverre zijn de morele kaders binnen de strategische doelstellingen van de organisatie expliciet gedefinieerd en bekend bij het management?",
-    "question_A_B": "In hoeverre zijn de morele kaders binnen de strategische doelstellingen van de organisatie expliciet gedefinieerd en bekend bij het management?",
-    "question_C": "Wordt er in de bestuurskamer ook daadwerkelijk gestuurd op deze kaders wanneer de kwartaalcijfers zwaar onder druk staan?",
-    "threshold": 3
-  },
-  {
-    "id": "filter_02",
-    "domain": "Sociale Context",
-    "seven_s": "Style",
-    "virtue": "Bespreekbaarheid",
-    "source": "Kaptein (2013) / Karssing",
-    "question": "In welke mate is het leiderschap proactief toegankelijk voor tegenspraak en ethische dilemma's vanuit de werkvloer?",
-    "question_A_B": "In welke mate is het leiderschap proactief toegankelijk voor tegenspraak en ethische dilemma's vanuit de werkvloer?",
-    "question_C": "Wat was de concrete en zichtbare consequentie voor de laatste medewerker die een kritisch ethisch risico aankaartte?",
-    "threshold": 3
-  },
-  {
-    "id": "filter_03",
-    "domain": "Operatie & Integriteit",
-    "seven_s": "Systems",
-    "virtue": "Sanctioneerbaarheid",
-    "source": "Kaptein (2013)",
-    "question": "Zijn de systemen voor compliance en incidentmelding transparant, veilig en onafhankelijk ingericht?",
-    "question_A_B": "Zijn de systemen voor compliance en incidentmelding transparant, veilig en onafhankelijk ingericht?",
-    "question_C": "Blijven de sancties gelijk wanneer een commerciële 'high-performer' of senior manager de integriteitsregels overtreedt?",
-    "threshold": 3
-  }
-]
+{
+  "questions": [
+    {
+      "text": "Wat doe je als een collega een fout maakt?",
+      "options": [
+        { "text": "Ik meld het direct", "score": 10 },
+        { "text": "Ik help het oplossen", "score": 5 }
+      ]
+    }
+  ]
+}
