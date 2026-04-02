@@ -8,6 +8,7 @@ export default function App() {
       </div>
       <h1>Lakmoesproef</h1>
       <p>Stap 1: basis werkt.</p>
+      <AuditSurvey />
     </div>
   );
 }
