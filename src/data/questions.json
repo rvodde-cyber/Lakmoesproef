@@ -1,11 +1,25 @@
 {
   "questions": [
-    {
-      "text": "Wat doe je als een collega een fout maakt?",
-      "options": [
-        { "text": "Ik meld het direct", "score": 10 },
-        { "text": "Ik help het oplossen", "score": 5 }
-      ]
-    }
+    { "id": 1, "text": "Een collega vraagt je om een kleine fout in een rapport te negeren. Wat doe je?", "options": [{ "text": "Ik negeer het om de sfeer goed te houden.", "score": 0 }, { "text": "Ik bespreek het met de collega en dring aan op correctie.", "score": 10 }] },
+    { "id": 2, "text": "Je ontdekt dat een projectpartner gegevens manipuleert om resultaten beter te laten lijken. Jouw reactie?", "options": [{ "text": "Ik meld dit direct bij de leidinggevende.", "score": 10 }, { "text": "Ik doe alsof ik niets gezien heb, het is niet mijn verantwoordelijkheid.", "score": 0 }] },
+    { "id": 3, "text": "Mag je bedrijfseigendommen (zoals een laptop) gebruiken voor privézaken?", "options": [{ "text": "Ja, zolang het mijn werk niet hindert.", "score": 5 }, { "text": "Nee, strikt alleen voor zakelijk gebruik.", "score": 10 }] },
+    { "id": 4, "text": "Je krijgt een duur cadeau van een leverancier vlak voor een belangrijke aanbesteding.", "options": [{ "text": "Ik accepteer het als een teken van goede relatie.", "score": 0 }, { "text": "Ik weiger het beleefd om belangenverstrengeling te voorkomen.", "score": 10 }] },
+    { "id": 5, "text": "Een klant vraagt om een korting in ruil voor een persoonlijke gunst.", "options": [{ "text": "Ik ga akkoord als het de deal rondmaakt.", "score": 0 }, { "text": "Ik wijs dit verzoek direct af.", "score": 10 }] },
+    { "id": 6, "text": "Je ziet een kans om persoonlijk te profiteren van vertrouwelijke bedrijfsinformatie.", "options": [{ "text": "Ik maak gebruik van de kans, niemand merkt het.", "score": 0 }, { "text": "Ik doe niets en bewaar de vertrouwelijkheid.", "score": 10 }] },
+    { "id": 7, "text": "Hoe ga je om met een fout die je zelf hebt gemaakt maar die nog niemand heeft gezien?", "options": [{ "text": "Ik meld het direct en bied excuses aan.", "score": 10 }, { "text": "Ik wacht af of iemand het ontdekt.", "score": 0 }] },
+    { "id": 8, "text": "Een goede vriend vraagt je om vertrouwelijke informatie over een concurrent.", "options": [{ "text": "Ik geef een paar kleine details die niet schadelijk lijken.", "score": 0 }, { "text": "Ik weiger strikt informatie te delen.", "score": 10 }] },
+    { "id": 9, "text": "Vind je het acceptabel om ziekteverzuim te gebruiken als je gewoon een vrije dag wilt?", "options": [{ "text": "Nee, dat is diefstal van tijd.", "score": 10 }, { "text": "Soms, als de werkdruk erg hoog is geweest.", "score": 0 }] },
+    { "id": 10, "text": "Je merkt dat een minderheid in je team structureel wordt buitengesloten.", "options": [{ "text": "Ik kaart dit aan bij de manager of HR.", "score": 10 }, { "text": "Ik bemoei me er niet mee om de vrede te bewaren.", "score": 0 }] },
+    { "id": 11, "text": "Is het moreel juist om credits te nemen voor werk dat een stagiair heeft gedaan?", "options": [{ "text": "Nee, ik benoem de bijdrage van de stagiair expliciet.", "score": 10 }, { "text": "Ja, ik ben verantwoordelijk dus het is mijn succes.", "score": 0 }] },
+    { "id": 12, "text": "Je ontdekt een beveiligingslek in de software van een klant.", "options": [{ "text": "Ik meld dit onmiddellijk aan de klant.", "score": 10 }, { "text": "Ik wacht tot de volgende geplande update.", "score": 5 }] },
+    { "id": 13, "text": "Mag je de waarheid 'buigen' tijdens een verkoopgesprek?", "options": [{ "text": "Nee, eerlijkheid duurt het langst.", "score": 10 }, { "text": "Een beetje overdrijven hoort bij verkopen.", "score": 0 }] },
+    { "id": 14, "text": "Je leidinggevende vraagt je om iets onethisch te doen.", "options": [{ "text": "Ik weiger en leg uit waarom.", "score": 10 }, { "text": "Ik voer het uit, hij is de baas.", "score": 0 }] },
+    { "id": 15, "text": "Hoe belangrijk is duurzaamheid in je zakelijke beslissingen?", "options": [{ "text": "Cruciaal, ook als het meer kost.", "score": 10 }, { "text": "Alleen als het ook winstgevend is.", "score": 5 }] },
+    { "id": 16, "text": "Je hoort een schadelijke roddel over een directielid. Wat doe je?", "options": [{ "text": "Ik vertel het niet door.", "score": 10 }, { "text": "Ik deel het alleen met mijn directe collega.", "score": 0 }] },
+    { "id": 17, "text": "Een project loopt uit de hand qua budget. Wanneer meld je dit?", "options": [{ "text": "Zodra ik de eerste signalen zie.", "score": 10 }, { "text": "Pas als het budget echt op is.", "score": 0 }] },
+    { "id": 18, "text": "Is het okay om softwarelicenties te delen buiten de voorwaarden?", "options": [{ "text": "Nee, dat is illegaal en onethisch.", "score": 10 }, { "text": "Ja, die bedrijven verdienen al genoeg.", "score": 0 }] },
+    { "id": 19, "text": "Je krijgt de kans om een concurrent zwart te maken bij een klant.", "options": [{ "text": "Ik focus op mijn eigen kracht en blijf professioneel.", "score": 10 }, { "text": "Ik noem hun zwakke punten om de deal te winnen.", "score": 0 }] },
+    { "id": 20, "text": "Mag je AI gebruiken om teksten te schrijven zonder dit te melden?", "options": [{ "text": "Ja, het is een tool zoals een rekenmachine.", "score": 5 }, { "text": "Alleen als ik de bron/methode transparant maak.", "score": 10 }] },
+    { "id": 21, "text": "Wat is je uiteindelijke doel in je professie?", "options": [{ "text": "Impact maken met integriteit.", "score": 10 }, { "text": "Maximaal financieel succes.", "score": 0 }] }
   ]
 }
