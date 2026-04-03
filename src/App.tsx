@@ -24,8 +24,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f7f9] flex items-center justify-center p-4 font-sans text-slate-800">
-      <div className="max-w-xl w-full bg-white rounded-xl shadow-2xl overflow-hidden border border-slate-200">
+    <div className="min-h-screen bg-white font-sans text-slate-800">
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         
         {/* LAKMOES INDICATOR LINE */}
         <div className="h-2 w-full flex">
