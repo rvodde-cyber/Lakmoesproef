@@ -18,14 +18,15 @@ export const PAGE_CAPTIONS = [
   "Menselijke maat, externe verantwoording en verbeterkracht",
 ] as const;
 
+/** Plaats foto’s in `public/` met deze exacte namen (7 stuks, 1 per vragenblok). PNG-inhoud hoort op `.png`, niet op `.jpg`. */
 export const PAGE_IMAGE_PATHS = [
-  "/question-block-1.svg",
-  "/question-block-2.svg",
-  "/question-block-3.svg",
-  "/question-block-4.svg",
-  "/question-block-5.svg",
-  "/question-block-6.svg",
-  "/question-block-7.svg",
+  "/question-block-1.png",
+  "/question-block-2.png",
+  "/question-block-3.png",
+  "/question-block-4.png",
+  "/question-block-5.png",
+  "/question-block-6.png",
+  "/question-block-7.png",
 ] as const;
 
 export const questions: Question[] = [

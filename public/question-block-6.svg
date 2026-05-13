@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
-  <defs><linearGradient id="g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#e2e8f0"/></linearGradient></defs>
-  <rect width="1200" height="700" fill="url(#g6)"/>
-  <rect x="200" y="180" width="300" height="320" rx="28" fill="#475569" opacity="0.18"/>
-  <path d="M240 420 L320 330 L390 380 L460 290" stroke="#334155" stroke-width="14" fill="none" opacity="0.30"/>
-  <rect x="590" y="180" width="430" height="300" rx="28" fill="#ffffff" opacity="0.88"/>
-  <text x="630" y="300" font-family="Inter, Arial, sans-serif" font-size="42" fill="#334155">Vakmanschap</text>
-  <text x="630" y="355" font-family="Inter, Arial, sans-serif" font-size="30" fill="#475569">Grenzen " Data verbeteren</text>
-</svg>
