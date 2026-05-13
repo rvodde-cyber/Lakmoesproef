@@ -1,9 +1,15 @@
 import type { Pillar } from "../utils/assessment";
 
-export function RadarChart({ pillars }: { pillars: Pillar[] }) {
-  const size = 280;
+type RadarChartProps = {
+  pillars: Pillar[];
+  /** Standaard 280; resultatenpagina gebruikt een groter spinnewiel. */
+  size?: number;
+};
+
+export function RadarChart({ pillars, size = 280 }: RadarChartProps) {
   const center = size / 2;
-  const maxRadius = 95;
+  const maxRadius = (95 / 280) * size;
+  const fontSize = Math.max(9, Math.round(size / 26));
   const steps = 5;
   const n = pillars.length;
   const angleStep = (Math.PI * 2) / n;
@@ -36,7 +42,7 @@ export function RadarChart({ pillars }: { pillars: Pillar[] }) {
         return (
           <g key={pillar.label}>
             <line x1={center} y1={center} x2={x} y2={y} stroke="#dbe2ea" />
-            <text x={x} y={y} textAnchor="middle" dominantBaseline="middle" fontSize="10" fill="#475569">
+            <text x={x} y={y} textAnchor="middle" dominantBaseline="middle" fontSize={fontSize} fill="#475569">
               {pillar.label}
             </text>
           </g>

@@ -7,6 +7,26 @@ export type Pillar = {
 
 const STORAGE_KEY = "organisatie-lakmoesproef-session-v1";
 
+/**
+ * Antwoorden op schaal 1–5. Scores **3 of lager** zijn expliciet **verbeterpunten**
+ * (niet alleen “zwak”): ruimte om te versterken. Als referentie: ruwweg het gebied
+ * tot en met **7 op 10** bij een tiendelige schaal.
+ */
+export const LOW_SCORE_MAX_ON_SCALE_5 = 3;
+
+export type LowScoreEntry = { question: Question; value: number };
+
+export function getLowScoringQuestionEntries(
+  answers: Record<number, number>,
+  allQuestions: Question[],
+  maxInclusive: number = LOW_SCORE_MAX_ON_SCALE_5,
+): LowScoreEntry[] {
+  return allQuestions
+    .map((q) => ({ question: q, value: answers[q.id] }))
+    .filter((row): row is LowScoreEntry => typeof row.value === "number" && row.value <= maxInclusive)
+    .sort((a, b) => a.value - b.value || a.question.id - b.question.id);
+}
+
 export function chunkQuestions(items: Question[], pageSize: number): Question[][] {
   const pages: Question[][] = [];
   for (let i = 0; i < items.length; i += pageSize) {
