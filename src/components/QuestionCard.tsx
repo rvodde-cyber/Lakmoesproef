@@ -1,4 +1,5 @@
 import type { Question } from "../data/questions";
+import { COPY_PER_STELLING, COPY_SCORE_COMPACT_REGEL } from "../data/instrumentCopy";
 
 type QuestionCardProps = {
   question: Question;
@@ -13,6 +14,7 @@ export function QuestionCard({ question, selected, onSelect }: QuestionCardProps
       <h2 className="mt-1 text-xl font-semibold">{question.title}</h2>
       <p className="text-sm font-medium text-teal-700">{question.subtitle}</p>
       <p className="mt-2 text-sm leading-relaxed text-slate-600">{question.explanation}</p>
+      <p className="mt-3 text-sm leading-relaxed text-slate-600">{COPY_PER_STELLING}</p>
 
       <div className="mt-4" role="radiogroup" aria-label={`Score voor vraag ${question.id}: ${question.title}`}>
         <div className="flex flex-wrap gap-2">
@@ -33,6 +35,7 @@ export function QuestionCard({ question, selected, onSelect }: QuestionCardProps
           })}
         </div>
       </div>
+      <p className="mt-3 text-xs leading-relaxed text-slate-500">{COPY_SCORE_COMPACT_REGEL}</p>
     </article>
   );
 }

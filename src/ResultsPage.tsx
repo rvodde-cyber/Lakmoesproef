@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { RadarChart } from "./components/RadarChart";
 import { ReportSources } from "./components/ReportSources";
 import { INSTRUMENT_VERSION, questions } from "./data/questions";
+import { COPY_RESULTATEN_KADER } from "./data/instrumentCopy";
 import {
   calculatePillars,
   calculateQuickActions,
@@ -17,12 +18,31 @@ type ResultsPageProps = {
   onBack: () => void;
 };
 
+function preparePdfClone(clonedDoc: Document) {
+  clonedDoc.querySelectorAll("[data-pdf-cover]").forEach((node) => {
+    const el = node as HTMLElement;
+    el.style.setProperty("display", "block", "important");
+    el.style.visibility = "visible";
+  });
+  clonedDoc.querySelectorAll("[data-pdf-hide]").forEach((node) => {
+    (node as HTMLElement).style.setProperty("display", "none", "important");
+  });
+  clonedDoc.querySelectorAll("[data-pdf-expand]").forEach((node) => {
+    const el = node as HTMLElement;
+    el.style.maxHeight = "none";
+    el.style.overflow = "visible";
+  });
+}
+
 export function ResultsPage({ onBack }: ResultsPageProps) {
   const [hydrated, setHydrated] = useState(false);
   const [organization, setOrganization] = useState("");
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [notes, setNotes] = useState("");
   const [questionPageIndex, setQuestionPageIndex] = useState(0);
+  const [pdfBusy, setPdfBusy] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+  const pdfExportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const saved = loadSession();
@@ -62,6 +82,41 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleSavePdf = async () => {
+    const root = pdfExportRef.current;
+    if (!root || pdfBusy) return;
+    setPdfBusy(true);
+    setPdfError(null);
+    try {
+      const { default: html2pdf } = await import("html2pdf.js");
+      const safeDate = printDate.replace(/\//g, "-").replace(/\s/g, "");
+      const filename = `Morele-Lakmoesproef-resultaten-${safeDate}.pdf`;
+      await html2pdf()
+        .set({
+          margin: [12, 12, 16, 12],
+          filename,
+          image: { type: "jpeg", quality: 0.93 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            onclone: (clonedDoc) => preparePdfClone(clonedDoc),
+          },
+          pagebreak: { mode: ["css", "legacy"] },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        })
+        .from(root)
+        .save();
+    } catch (err) {
+      console.error(err);
+      setPdfError(
+        "PDF maken mislukt in de browser. Gebruik dan ‘Print resultaten’ en kies bij de printer ‘Opslaan als PDF’.",
+      );
+    } finally {
+      setPdfBusy(false);
+    }
   };
 
   const handleReset = () => {
@@ -104,16 +159,39 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
           >
             ← Terug naar de scan
           </button>
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
-          >
-            Print resultaten
-          </button>
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 hover:border-slate-400"
+            >
+              Print resultaten
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleSavePdf()}
+              disabled={pdfBusy}
+              className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {pdfBusy ? "PDF wordt gemaakt…" : "Opslaan als PDF"}
+            </button>
+          </div>
         </div>
+        {pdfError ? (
+          <p role="alert" className="mb-4 text-sm text-red-700 print:hidden">
+            {pdfError}
+          </p>
+        ) : null}
+        <p className="mb-4 max-w-2xl text-xs leading-relaxed text-slate-500 print:hidden">
+          <span className="font-semibold text-slate-700">PDF:</span> het bestand wordt in uw browser gemaakt en
+          gedownload (niets wordt naar een server gestuurd). Bij een vol scherm kan dat enkele seconden duren.
+        </p>
 
-        <div className="mb-6 hidden rounded-2xl border border-slate-300 bg-white p-6 print:block">
+        <div ref={pdfExportRef} id="pdf-export-root" className="space-y-6">
+          <div
+            data-pdf-cover
+            className="mb-6 hidden rounded-2xl border border-slate-300 bg-white p-6 print:block"
+          >
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Rapport Morele Lakmoesproef</p>
           <h1 className="mt-2 text-2xl font-semibold text-slate-900">
             {organization.trim().length > 0 ? organization : "Organisatie (niet ingevuld)"}
@@ -140,6 +218,14 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
           <p className="mt-2 text-sm text-slate-600">
             Scorecard, verbeterpunten op basis van uw antwoorden, en concrete vervolgstappen.
           </p>
+          <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700">
+            <p className="font-medium text-slate-800">Wat zegt dit overzicht?</p>
+            <p className="mt-2">{COPY_RESULTATEN_KADER}</p>
+            <p className="mt-3 text-xs text-slate-500">
+              Herhaling schaal: 1 = in uw ogen weinig aanwezig · 5 = sterk tot (bijna) ideaal — zo heeft u elke stelling
+              beoordeeld; het totaalpercentage weegt al uw keuzes samen.
+            </p>
+          </div>
         </header>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-start">
@@ -162,7 +248,10 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
                 Geen verbeterpunten in dit overzicht: al uw scores liggen boven {LOW_SCORE_MAX_ON_SCALE_5}.
               </p>
             ) : (
-              <ul className="mt-4 max-h-[min(520px,70vh)] space-y-3 overflow-y-auto pr-1">
+              <ul
+                data-pdf-expand
+                className="mt-4 max-h-[min(520px,70vh)] space-y-3 overflow-y-auto pr-1"
+              >
                 {lowScores.map(({ question, value }) => (
                   <li
                     key={question.id}
@@ -221,7 +310,7 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center gap-4 print:hidden">
+        <div className="mt-6 flex flex-wrap items-center gap-4 print:hidden" data-pdf-hide>
           <button
             type="button"
             onClick={handleReset}
@@ -230,12 +319,14 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
             Sessie wissen
           </button>
           <p className="text-xs text-slate-500">
-            Privacy: antwoorden worden lokaal in deze browser opgeslagen; er is geen serveropslag.
+            Privacy: antwoorden worden lokaal in deze browser opgeslagen; er is geen serveropslag. Alleen u ziet dit
+            rapport, tenzij u het zelf deelt of erover afspreekt.
           </p>
         </div>
 
         <div className="mt-8 print:mt-4">
           <ReportSources />
+        </div>
         </div>
       </div>
     </main>

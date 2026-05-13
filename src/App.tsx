@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { QuestionCard } from "./components/QuestionCard";
 import {
+  COPY_INTRO_PERSOONLIJK,
+  COPY_INTRO_VERTRAULIJK,
+  COPY_SCORE_SCHAAL_UITLEG,
+  COPY_STELLINGEN_INTRO,
+} from "./data/instrumentCopy";
+import {
   INSTRUMENT_VERSION,
   PAGE_CAPTIONS,
   PAGE_IMAGE_PATHS,
@@ -72,7 +78,12 @@ export default function App({ onOpenResults = () => {} }: AppProps) {
         <header className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:hidden">
           <p className="text-xs font-semibold uppercase tracking-wider text-violet-700">Organisatiescan</p>
           <h1 className="mt-2 text-3xl font-semibold text-slate-900">De Morele Lakmoesproef</h1>
-          <p className="mt-2 text-sm text-slate-600">Scan uw organisatie en leg de basis voor een verbeterplan. Deze meting is geinspireerd op o.a. <em>De voorbeeldige organisatie</em> en inzichten uit ethisch organisatieonderzoek.</p>
+          <p className="mt-2 text-sm text-slate-600">
+            Scan uw organisatie en leg de basis voor een verbeterplan. Het gaat om uw persoonlijke inschatting van de
+            morele gesteldheid van de organisatie; alleen u bepaalt of anderen het overzicht te zien krijgen. Deze
+            meting is geïnspireerd op o.a. <em>De voorbeeldige organisatie</em> en inzichten uit ethisch
+            organisatieonderzoek.
+          </p>
           <input className="mt-4 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:border-teal-600 focus:outline-none md:max-w-md" placeholder="Organisatienaam (optioneel)" value={organization} onChange={(e) => setOrganization(e.target.value)} />
         </header>
 
@@ -84,6 +95,21 @@ export default function App({ onOpenResults = () => {} }: AppProps) {
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">
                   Scan uw organisatie, visualiseer uw ethische landschap en vertaal inzichten direct naar verbeteracties.
                 </p>
+                <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700">
+                  <p className="font-medium text-slate-800">Persoonlijk en vertrouwelijk</p>
+                  <p className="mt-2">
+                    <span className="font-semibold text-slate-800">a) </span>
+                    {COPY_INTRO_PERSOONLIJK}
+                  </p>
+                  <p className="mt-2">
+                    <span className="font-semibold text-slate-800">b) </span>
+                    {COPY_INTRO_VERTRAULIJK}
+                  </p>
+                  <p className="mt-4 font-medium text-slate-800">Over de stellingen</p>
+                  <p className="mt-2">{COPY_STELLINGEN_INTRO}</p>
+                  <p className="mt-3 font-medium text-slate-800">De score 1 t/m 5</p>
+                  <p className="mt-2">{COPY_SCORE_SCHAAL_UITLEG}</p>
+                </div>
                 <div className="mt-6 grid grid-cols-3 gap-3 text-center">
                   <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
                     <p className="text-2xl text-violet-600">⚖️</p>
@@ -133,6 +159,23 @@ export default function App({ onOpenResults = () => {} }: AppProps) {
 
         {started && (
           <section ref={questionnaireRef} className="print:hidden">
+            <details className="mb-4 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm print:hidden">
+              <summary className="cursor-pointer font-semibold text-slate-800">
+                Hoe de stellingen en scores werken
+              </summary>
+              <div className="mt-3 space-y-2 border-t border-slate-100 pt-3 text-slate-600">
+                <p>
+                  <span className="font-semibold text-slate-800">a) </span>
+                  {COPY_INTRO_PERSOONLIJK}
+                </p>
+                <p>
+                  <span className="font-semibold text-slate-800">b) </span>
+                  {COPY_INTRO_VERTRAULIJK}
+                </p>
+                <p>{COPY_STELLINGEN_INTRO}</p>
+                <p>{COPY_SCORE_SCHAAL_UITLEG}</p>
+              </div>
+            </details>
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
               <div className="space-y-3">
                 {currentQuestions.map((question) => (
@@ -203,6 +246,7 @@ export default function App({ onOpenResults = () => {} }: AppProps) {
             </button>
             <p className="text-xs text-slate-500">
               Privacy: antwoorden worden lokaal in deze browser opgeslagen voor hervatten; er is geen serveropslag.
+              Alleen u ziet dit rapport, tenzij u het zelf deelt of erover afspreekt.
             </p>
           </div>
           {isDone && (
