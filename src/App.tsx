@@ -41,6 +41,7 @@ export default function App() {
   }, [questionPageIndex, started]);
 
   const completed = Object.keys(answers).length;
+  const hasProgress = completed > 0;
   const isDone = completed === questions.length;
   const score = useMemo(() => calculateScore(answers, questions.length), [answers]);
   const pillars = useMemo(() => calculatePillars(answers), [answers]);
@@ -183,7 +184,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
               <div className="space-y-3">
                 {currentQuestions.map((question) => (
                   <QuestionCard
@@ -209,6 +210,7 @@ export default function App() {
           </section>
         )}
 
+        {started && hasProgress && (
         <section className="report-section mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           {isDone && (
             <div className="mb-4 hidden rounded-xl border border-slate-300 bg-white p-4 print:block">
@@ -238,7 +240,7 @@ export default function App() {
           )}
           <p className="text-sm text-slate-600">Voortgang: {completed}/{questions.length}</p>
           <label className="mt-4 block text-sm font-medium print:hidden">Kernobservaties en verbeteracties</label>
-          <textarea rows={4} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Welke 2-3 interventies hebben nu prioriteit?" className="mt-2 w-full resize-y rounded-xl border border-slate-300 px-3 py-2 text-sm focus:border-teal-600 focus:outline-none print:hidden" />
+          <textarea rows={4} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Welke 2-3 interventies hebben volgens u nu prioriteit?" className="mt-2 w-full resize-y rounded-xl border border-slate-300 px-3 py-2 text-sm focus:border-teal-600 focus:outline-none print:hidden" />
           <div className="mt-3 flex flex-wrap items-center gap-3 print:hidden">
             <button
               type="button"
@@ -342,6 +344,7 @@ export default function App() {
             </div>
           )}
         </section>
+        )}
       </div>
     </main>
   );
