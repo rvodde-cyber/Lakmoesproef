@@ -84,7 +84,6 @@ export async function exportResultsPdf(
         html2canvas: {
           scale,
           useCORS: true,
-          allowTaint: true,
           logging: false,
           backgroundColor: "#ffffff",
           scrollX: 0,
