@@ -8,7 +8,7 @@ export const COPY_INTRO_PERSOONLIJK =
 
 /** b) Wie ziet het rapport */
 export const COPY_INTRO_VERTRAULIJK =
-  "Alleen u bepaalt wie dit overzicht te zien krijgt: het staat lokaal in uw browser en wordt niet automatisch gedeeld. Niemand buiten uzelf ziet dit rapport, tenzij u daar zelf (bijvoorbeeld met een coach, leidinggevende of team) expliciet over afspraken.";
+  "Alleen u bepaalt wie dit overzicht te zien krijgt: het staat lokaal in uw browser en wordt niet automatisch gedeeld. Niemand buiten uzelf ziet dit rapport, tenzij u zelf met anderen (bijvoorbeeld een coach, leidinggevende of team) expliciet afspraken maakt over het delen ervan.";
 
 export const COPY_SCORE_SCHAAL_UITLEG =
   "Wat betekenen de cijfers 1 t/m 5? Die schaal is bij elke stelling hetzelfde: 1 = in uw ogen weinig tot nauwelijks aanwezig zoals beschreven; 2 = beperkt; 3 = deels, met ruimte om te versterken; 4 = duidelijk aanwezig; 5 = in uw ogen sterk aanwezig tot (bijna) zoals u het voor ideaal houdt.";

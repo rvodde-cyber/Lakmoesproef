@@ -13,26 +13,11 @@ import {
   LOW_SCORE_MAX_ON_SCALE_5,
   saveSession,
 } from "./utils/assessment";
+import { exportResultsPdf } from "./utils/exportResultsPdf";
 
 type ResultsPageProps = {
   onBack: () => void;
 };
-
-function preparePdfClone(clonedDoc: Document) {
-  clonedDoc.querySelectorAll("[data-pdf-cover]").forEach((node) => {
-    const el = node as HTMLElement;
-    el.style.setProperty("display", "block", "important");
-    el.style.visibility = "visible";
-  });
-  clonedDoc.querySelectorAll("[data-pdf-hide]").forEach((node) => {
-    (node as HTMLElement).style.setProperty("display", "none", "important");
-  });
-  clonedDoc.querySelectorAll("[data-pdf-expand]").forEach((node) => {
-    const el = node as HTMLElement;
-    el.style.maxHeight = "none";
-    el.style.overflow = "visible";
-  });
-}
 
 export function ResultsPage({ onBack }: ResultsPageProps) {
   const [hydrated, setHydrated] = useState(false);
@@ -90,29 +75,20 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
     setPdfBusy(true);
     setPdfError(null);
     try {
-      const { default: html2pdf } = await import("html2pdf.js");
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       const safeDate = printDate.replace(/\//g, "-").replace(/\s/g, "");
       const filename = `Morele-Lakmoesproef-resultaten-${safeDate}.pdf`;
-      await html2pdf()
-        .set({
-          margin: [12, 12, 16, 12],
-          filename,
-          image: { type: "jpeg", quality: 0.93 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            logging: false,
-            onclone: (clonedDoc) => preparePdfClone(clonedDoc),
-          },
-          pagebreak: { mode: ["css", "legacy"] },
-          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-        })
-        .from(root)
-        .save();
+      const result = await exportResultsPdf(root, filename);
+      if (!result.ok) {
+        setPdfError(result.message);
+      }
     } catch (err) {
       console.error(err);
+      const isTimeout = err instanceof Error && err.message === "PDF-timeout";
       setPdfError(
-        "PDF maken mislukt in de browser. Gebruik dan ‘Print resultaten’ en kies bij de printer ‘Opslaan als PDF’.",
+        isTimeout
+          ? "PDF maken duurde te lang. Probeer ‘Print resultaten’ en kies ‘Opslaan als PDF’, of verklein het zoomniveau van de browser."
+          : "PDF maken mislukt in deze browser (komt soms voor op Safari of bij strikte beveiliging). Gebruik ‘Print resultaten’ → bestemming ‘Opslaan als PDF’.",
       );
     } finally {
       setPdfBusy(false);
@@ -149,7 +125,7 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[#f1f3f4] text-slate-900">
+    <main className="results-page min-h-screen bg-[#f1f3f4] text-slate-900">
       <div className="report-section mx-auto max-w-5xl px-6 py-10">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4 print:hidden">
           <button
@@ -184,7 +160,9 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
         ) : null}
         <p className="mb-4 max-w-2xl text-xs leading-relaxed text-slate-500 print:hidden">
           <span className="font-semibold text-slate-700">PDF:</span> het bestand wordt in uw browser gemaakt en
-          gedownload (niets wordt naar een server gestuurd). Bij een vol scherm kan dat enkele seconden duren.
+          gedownload (niets wordt naar een server gestuurd). Duurt het te lang of start er geen download? Gebruik dan{" "}
+          <strong>Print resultaten</strong> en kies als printer <strong>Opslaan als PDF</strong> (of “Microsoft Print to
+          PDF”).
         </p>
 
         <div ref={pdfExportRef} id="pdf-export-root" className="space-y-6">
@@ -276,7 +254,7 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
               <li key={action}>{action}</li>
             ))}
           </ul>
-          <div className="mt-5 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-900 print:hidden">
+          <div className="mt-5 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-900">
             <p className="font-semibold">Advies en ondersteuning</p>
             <p className="mt-1">
               Neem contact op met het Lectoraat Ethisch Werken van Fontys voor begeleiding bij het verbeteren van uw
@@ -300,9 +278,10 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Welke 2-3 interventies hebben volgens u nu prioriteit?"
+            data-pdf-hide
             className="mt-2 w-full resize-y rounded-xl border border-slate-300 px-3 py-2 text-sm focus:border-teal-600 focus:outline-none print:hidden"
           />
-          <div className="hidden print:block">
+          <div data-pdf-print-only className="hidden">
             <p className="text-sm font-semibold text-slate-700">Ingevulde interventies</p>
             <p className="mt-2 whitespace-pre-wrap text-sm text-slate-700">
               {notes.trim().length > 0 ? notes : "Geen interventies ingevuld."}

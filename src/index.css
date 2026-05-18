@@ -44,4 +44,23 @@ body,
     margin-top: 0;
     padding: 0;
   }
+
+  /* Resultatenpagina: volledig rapport printen */
+  .results-page {
+    background: #ffffff !important;
+  }
+
+  .results-page [data-pdf-cover],
+  .results-page [data-pdf-print-only] {
+    display: block !important;
+  }
+
+  .results-page [data-pdf-expand] {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .results-page .print\\:hidden {
+    display: none !important;
+  }
 }
