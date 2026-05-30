@@ -1,6 +1,6 @@
 /** Korte uitleg voor de scan: stellingen + betekenis 1–5 (algemeen). */
 export const COPY_STELLINGEN_INTRO =
-  "De vragen zijn stellingen over uw organisatie: hoe dingen nu spelen rond ethiek, cultuur, samenwerking en verantwoordelijkheid. Er is geen vooraf bepaald ‘juiste’ antwoord — u geeft uw eigen inschatting van wat u in de praktijk ziet en ervaart.";
+  "De vragen zijn stellingen over uw organisatie: hoe dingen nu spelen rond ethiek, cultuur, samenwerking en verantwoordelijkheid. Er is geen vooraf bepaald 'juiste' antwoord — u geeft uw eigen inschatting van wat u in de praktijk ziet en ervaart.";
 
 /** a) Persoonlijke inschatting morele gesteldheid */
 export const COPY_INTRO_PERSOONLIJK =
@@ -15,7 +15,7 @@ export const COPY_SCORE_SCHAAL_UITLEG =
 
 /** Bij elke kaart: koppeling stelling ↔ scorekeuze. */
 export const COPY_PER_STELLING =
-  "Lees de titel, het thema en de korte toelichting bij deze stelling. Kies daarna het cijfer dat het beste past bij uw beeld van hoe het nu in uw organisatie is — niet alleen wat er op papier staat, tenzij dat ook zo in de praktijk wordt uitgevoerd.";
+  "Geef uw inschatting van de praktijk — niet wat er op papier staat.";
 
 /** Eén regel onder de scoreknoppen (herhaling schaal). */
 export const COPY_SCORE_COMPACT_REGEL =
@@ -24,3 +24,4 @@ export const COPY_SCORE_COMPACT_REGEL =
 /** Resultatenpagina: kader rond betekenis van de uitkomst. */
 export const COPY_RESULTATEN_KADER =
   "Dit overzicht is gebouwd op uw ingevulde inschattingen: een persoonlijke reflectie van u als deelnemer, geen externe audit van de hele organisatie. Het percentage en het spinnewiel vatten uw antwoorden samen. Andere mensen kunnen andere scores geven — verschil is juist interessant om over te praten. Wie dit rapport te zien krijgt, bepaalt u zelf; er is geen automatische zichtbaarheid voor anderen tenzij u dat afspreekt.";
+
