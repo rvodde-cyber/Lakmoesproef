@@ -9,7 +9,7 @@ const STORAGE_KEY = "organisatie-lakmoesproef-session-v1";
 
 /**
  * Antwoorden op schaal 1–5. Scores **3 of lager** zijn expliciet **verbeterpunten**
- * (niet alleen “zwak”): ruimte om te versterken. Als referentie: ruwweg het gebied
+ * (niet alleen "zwak"): ruimte om te versterken. Als referentie: ruwweg het gebied
  * tot en met **7 op 10** bij een tiendelige schaal.
  */
 export const LOW_SCORE_MAX_ON_SCALE_5 = 3;
@@ -74,6 +74,7 @@ export function calculateLitmus(
   const values = Object.values(answers);
   const n = values.length;
   const fillRatio = completed / totalQuestions;
+
   if (n === 0) {
     return {
       fillRatio,
@@ -99,6 +100,7 @@ export function calculateLitmus(
   } else {
     statusLabel = `Gemiddelde score ${avgLabel}/5 — het buisje kleurt groen. Sterke ethische praktijk zichtbaar.`;
   }
+
   return { fillRatio, liquidColor, statusLabel };
 }
 
@@ -131,3 +133,4 @@ export function clearSession(): void {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(STORAGE_KEY);
 }
+
