@@ -15,6 +15,11 @@ import {
 } from "./utils/assessment";
 import { exportResultsPdf } from "./utils/exportResultsPdf";
 
+function isSafari(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+}
+
 type ResultsPageProps = {
   onBack: () => void;
 };
@@ -64,6 +69,7 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
       }).format(new Date()),
     [],
   );
+  const safariDetected = useMemo(() => isSafari(), []);
 
   const handlePrint = () => {
     window.print();
@@ -143,16 +149,25 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
             >
               Print resultaten
             </button>
-            <button
-              type="button"
-              onClick={() => void handleSavePdf()}
-              disabled={pdfBusy}
-              className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {pdfBusy ? "PDF wordt gemaakt…" : "Opslaan als PDF"}
-            </button>
+            {!safariDetected && (
+              <button
+                type="button"
+                onClick={() => void handleSavePdf()}
+                disabled={pdfBusy}
+                className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {pdfBusy ? "PDF wordt gemaakt…" : "Opslaan als PDF"}
+              </button>
+            )}
           </div>
         </div>
+        {safariDetected && (
+          <p className="mb-4 text-sm text-amber-700 print:hidden">
+            <span className="font-semibold">Safari-tip:</span> gebruik{" "}
+            <strong>Print resultaten</strong> → kies als printer{" "}
+            <strong>Bewaar als PDF</strong> om het rapport op te slaan.
+          </p>
+        )}
         {pdfError ? (
           <p role="alert" className="mb-4 text-sm text-red-700 print:hidden">
             {pdfError}

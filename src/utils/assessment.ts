@@ -82,18 +82,22 @@ export function calculateLitmus(
     };
   }
 
-  // Alleen scores 1 en 2 bepalen de kleurintensiteit.
-  const lowShare = values.filter((v) => v === 1 || v === 2).length / n;
-  const health = Math.max(0, Math.min(1, 1 - lowShare));
-  const hue = 6 + health * 142;
-  const sat = 58 + health * 22;
-  const light = 34 + health * 16;
-  const liquidColor = `hsl(${Math.round(hue)}, ${Math.round(sat)}%, ${Math.round(light)}%)`;
-  let statusLabel = "Enkele scores 1 of 2 tussen de andere antwoorden — het buisje is een momentopname, geen eindoordeel.";
-  if (lowShare === 0) {
-    statusLabel = "Nog geen scores 1 of 2 — het buisje blijft in het gunstige groene gebied (alleen 1 en 2 beïnvloeden de kleur).";
-  } else if (lowShare >= 0.35) {
-    statusLabel = "Relatief veel antwoorden 1 of 2 — het buisje kleurt roder (alleen deze scores tellen mee voor de lakmoeskleur).";
+  const avg = values.reduce((a, b) => a + b, 0) / n;
+  const health = (avg - 1) / 4;
+  const hue = Math.round(6 + health * 142);
+  const sat = Math.round(65 + health * 15);
+  const light = Math.round(36 + health * 14);
+  const liquidColor = `hsl(${hue}, ${sat}%, ${light}%)`;
+  const avgLabel = avg.toFixed(1);
+  let statusLabel: string;
+  if (avg <= 2.0) {
+    statusLabel = `Gemiddelde score ${avgLabel}/5 — het buisje kleurt rood. Er zijn veel verbeterpunten.`;
+  } else if (avg <= 3.0) {
+    statusLabel = `Gemiddelde score ${avgLabel}/5 — het buisje kleurt oranje. Er is ruimte voor verbetering.`;
+  } else if (avg <= 4.0) {
+    statusLabel = `Gemiddelde score ${avgLabel}/5 — het buisje kleurt geel-groen. Richting een gezonde praktijk.`;
+  } else {
+    statusLabel = `Gemiddelde score ${avgLabel}/5 — het buisje kleurt groen. Sterke ethische praktijk zichtbaar.`;
   }
   return { fillRatio, liquidColor, statusLabel };
 }
