@@ -19,6 +19,11 @@ type ResultsPageProps = {
   onBack: () => void;
 };
 
+function isSafari(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+}
+
 export function ResultsPage({ onBack }: ResultsPageProps) {
   const [hydrated, setHydrated] = useState(false);
   const [organization, setOrganization] = useState("");
@@ -28,6 +33,7 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
   const [pdfBusy, setPdfBusy] = useState(false);
   const [pdfError, setPdfError] = useState<string | null>(null);
   const pdfExportRef = useRef<HTMLDivElement>(null);
+  const safariDetected = useMemo(() => isSafari(), []);
 
   useEffect(() => {
     const saved = loadSession();
@@ -87,8 +93,8 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
       const isTimeout = err instanceof Error && err.message === "PDF-timeout";
       setPdfError(
         isTimeout
-          ? "PDF maken duurde te lang. Probeer ‘Print resultaten’ en kies ‘Opslaan als PDF’, of verklein het zoomniveau van de browser."
-          : "PDF maken mislukt in deze browser (komt soms voor op Safari of bij strikte beveiliging). Gebruik ‘Print resultaten’ → bestemming ‘Opslaan als PDF’.",
+          ? "PDF maken duurde te lang. Probeer 'Print resultaten' en kies 'Opslaan als PDF'."
+          : "PDF maken mislukt in deze browser. Gebruik 'Print resultaten' → bestemming 'Opslaan als PDF'.",
       );
     } finally {
       setPdfBusy(false);
@@ -143,27 +149,36 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
             >
               Print resultaten
             </button>
-            <button
-              type="button"
-              onClick={() => void handleSavePdf()}
-              disabled={pdfBusy}
-              className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {pdfBusy ? "PDF wordt gemaakt…" : "Opslaan als PDF"}
-            </button>
+            {!safariDetected && (
+              <button
+                type="button"
+                onClick={() => void handleSavePdf()}
+                disabled={pdfBusy}
+                className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {pdfBusy ? "PDF wordt gemaakt…" : "Opslaan als PDF"}
+              </button>
+            )}
           </div>
         </div>
+        {safariDetected ? (
+          <p className="mb-4 text-sm text-amber-700 print:hidden">
+            <span className="font-semibold">Safari-tip:</span> gebruik{" "}
+            <strong>Print resultaten</strong> → kies als printer{" "}
+            <strong>Bewaar als PDF</strong> om het rapport op te slaan.
+          </p>
+        ) : (
+          <p className="mb-4 max-w-2xl text-xs leading-relaxed text-slate-500 print:hidden">
+            <span className="font-semibold text-slate-700">PDF:</span> het bestand wordt in uw browser gemaakt en
+            gedownload (niets wordt naar een server gestuurd). Duurt het te lang? Gebruik dan{" "}
+            <strong>Print resultaten</strong> en kies als printer <strong>Opslaan als PDF</strong>.
+          </p>
+        )}
         {pdfError ? (
           <p role="alert" className="mb-4 text-sm text-red-700 print:hidden">
             {pdfError}
           </p>
         ) : null}
-        <p className="mb-4 max-w-2xl text-xs leading-relaxed text-slate-500 print:hidden">
-          <span className="font-semibold text-slate-700">PDF:</span> het bestand wordt in uw browser gemaakt en
-          gedownload (niets wordt naar een server gestuurd). Duurt het te lang of start er geen download? Gebruik dan{" "}
-          <strong>Print resultaten</strong> en kies als printer <strong>Opslaan als PDF</strong> (of “Microsoft Print to
-          PDF”).
-        </p>
 
         <div ref={pdfExportRef} id="pdf-export-root" className="space-y-6">
           <div
@@ -311,3 +326,4 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
     </main>
   );
 }
+
