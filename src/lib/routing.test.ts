@@ -13,11 +13,16 @@ describe("redirectTargetWithoutSupabase", () => {
     expect(redirectTargetWithoutSupabase("/teamsessie/resultaten/1234", false, false)).toBe("/");
   });
 
-  it("sends bare home to /scan when not configured and no progress", () => {
-    expect(redirectTargetWithoutSupabase("/", false, false)).toBe("/scan");
+  it("laat de landingspagina op / staan zonder Supabase", () => {
+    expect(redirectTargetWithoutSupabase("/", false, false)).toBeNull();
+    expect(redirectTargetWithoutSupabase("/", false, true)).toBeNull();
   });
 
-  it("keeps home when individual progress exists", () => {
-    expect(redirectTargetWithoutSupabase("/", false, true)).toBeNull();
+  it("stuurt /keuze naar /scan wanneer niet geconfigureerd en geen voortgang", () => {
+    expect(redirectTargetWithoutSupabase("/keuze", false, false)).toBe("/scan");
+  });
+
+  it("houdt /keuze bij individuele voortgang", () => {
+    expect(redirectTargetWithoutSupabase("/keuze", false, true)).toBeNull();
   });
 });

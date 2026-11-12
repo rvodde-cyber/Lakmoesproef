@@ -3,7 +3,7 @@ export function normalizeAppPath(pathname: string): string {
 }
 
 /**
- * Zonder Supabase: geen teamsessie-routes; start zonder voortgang gaat naar /scan.
+ * Zonder Supabase: geen teamsessie-routes; /keuze zonder voortgang gaat naar /scan.
  * Retourneert doelpad of null als er geen redirect nodig is.
  */
 export function redirectTargetWithoutSupabase(
@@ -15,6 +15,6 @@ export function redirectTargetWithoutSupabase(
 
   const path = normalizeAppPath(pathname);
   if (path === "/teamsessie" || path.startsWith("/teamsessie/")) return "/";
-  if (path === "/" && !hasIndividualProgress) return "/scan";
+  if (path === "/keuze" && !hasIndividualProgress) return "/scan";
   return null;
 }
