@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { RadarChart } from "./components/RadarChart";
 import { ReportSources } from "./components/ReportSources";
 import { INSTRUMENT_VERSION, questions } from "./data/questions";
-import { COPY_RESULTATEN_KADER } from "./data/instrumentCopy";
+import { COPY_ADVIES_LECTORAAT, COPY_LEERGANG_TITEL, COPY_LEERGANG_UITLEG, COPY_NOTES_PLACEHOLDER, COPY_RESULTATEN_KADER, COPY_TIP_COLLEGAS } from "./data/instrumentCopy";
 import {
   calculatePillars,
   calculateQuickActions,
@@ -10,7 +10,6 @@ import {
   clearSession,
   getLowScoringQuestionEntries,
   loadSession,
-  LOW_SCORE_MAX_ON_SCALE_5,
   saveSession,
 } from "./utils/assessment";
 import { exportResultsPdf } from "./utils/exportResultsPdf";
@@ -25,30 +24,24 @@ type ResultsPageProps = {
 };
 
 export function ResultsPage({ onBack }: ResultsPageProps) {
-  const [hydrated, setHydrated] = useState(false);
-  const [organization, setOrganization] = useState("");
-  const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [notes, setNotes] = useState("");
-  const [questionPageIndex, setQuestionPageIndex] = useState(0);
+  const [restoredSession] = useState(() => loadSession());
+  const isRestoringRef = useRef(true);
+  const [organization, setOrganization] = useState(() => restoredSession?.organization ?? "");
+  const [answers, setAnswers] = useState<Record<number, number>>(() => restoredSession?.answers ?? {});
+  const [notes, setNotes] = useState(() => restoredSession?.notes ?? "");
+  const [questionPageIndex, setQuestionPageIndex] = useState(() => restoredSession?.questionPageIndex ?? 0);
   const [pdfBusy, setPdfBusy] = useState(false);
   const [pdfError, setPdfError] = useState<string | null>(null);
   const pdfExportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const saved = loadSession();
-    if (saved) {
-      setOrganization(saved.organization ?? "");
-      setAnswers(saved.answers ?? {});
-      setNotes(saved.notes ?? "");
-      setQuestionPageIndex(saved.questionPageIndex ?? 0);
-    }
-    setHydrated(true);
+    isRestoringRef.current = false;
   }, []);
 
   useEffect(() => {
-    if (!hydrated) return;
+    if (isRestoringRef.current) return;
     saveSession({ organization, answers, notes, questionPageIndex });
-  }, [hydrated, organization, answers, notes, questionPageIndex]);
+  }, [organization, answers, notes, questionPageIndex]);
 
   const completed = Object.keys(answers).length;
   const isComplete = completed === questions.length;
@@ -207,9 +200,9 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
 
         <header className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:hidden">
           <p className="text-xs font-semibold uppercase tracking-wider text-violet-700">Resultaten</p>
-          <h1 className="mt-2 text-2xl font-semibold text-slate-900">Uw Lakmoes-overzicht</h1>
+          <h1 className="mt-2 text-2xl font-semibold text-slate-900">Uw overzicht</h1>
           <p className="mt-2 text-sm text-slate-600">
-            Scorecard, verbeterpunten op basis van uw antwoorden, en concrete vervolgstappen.
+            Een momentopname van uw inschatting — bedoeld om over te praten, niet om te oordelen.
           </p>
           <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700">
             <p className="font-medium text-slate-800">Wat zegt dit overzicht?</p>
@@ -223,7 +216,8 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-start">
           <div className="rounded-2xl border border-slate-200 bg-gradient-to-b from-sky-50 to-white p-6 shadow-sm">
-            <p className="text-sm font-semibold text-slate-700">Jouw Lakmoes Scorecard</p>
+            <p className="text-sm font-semibold text-slate-700">Integriteitsscore</p>
+            <p className="mt-1 text-xs text-slate-500">Samenvatting van uw 21 inschattingen (geen cijfer voor uw organisatie)</p>
             <p className="mt-1 text-4xl font-bold text-sky-700">{score}%</p>
             <div className="mt-4 flex justify-center">
               <RadarChart pillars={pillars} size={400} />
@@ -231,14 +225,14 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <p className="text-sm font-semibold text-slate-800">Verbeterpunten</p>
+            <p className="text-sm font-semibold text-slate-800">Aandachtspunten voor gesprek</p>
             <p className="mt-1 text-xs leading-relaxed text-slate-500">
-              Vragen met score <strong>1, 2 of 3</strong> op de schaal 1–5: kansen om te versterken. Ter vergelijking:
-              dat komt ruwweg overeen met <strong>7 of lager op 10</strong> bij een tiendelige schaal.
+              Stellingen waar u 1, 2 of 3 scoorde — kansen om samen scherper te kijken, niet om te veroordelen.
             </p>
             {lowScores.length === 0 ? (
               <p className="mt-4 text-sm text-slate-600">
-                Geen verbeterpunten in dit overzicht: al uw scores liggen boven {LOW_SCORE_MAX_ON_SCALE_5}.
+                Geen lage scores in dit overzicht — al uw stellingen scoren 4 of 5. Bespreek desondanks waar u
+                verschilt van collega's.
               </p>
             ) : (
               <ul
@@ -251,7 +245,7 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
                     className="rounded-xl border border-sky-200/90 bg-sky-50/70 px-4 py-3 text-sm text-slate-800"
                   >
                     <p className="text-xs font-semibold uppercase tracking-wide text-sky-900/85">
-                      Verbeterpunt — vraag {question.id} (score {value}/5)
+                      Aandachtspunt — stelling {question.id} (score {value}/5)
                     </p>
                     <p className="mt-1 font-semibold text-slate-900">{question.title}</p>
                     <p className="mt-0.5 text-xs text-slate-600">{question.subtitle}</p>
@@ -263,18 +257,16 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
         </div>
 
         <div className="mt-6 rounded-2xl border border-slate-200 bg-gradient-to-b from-slate-50 to-white p-6 shadow-sm">
-          <p className="text-sm font-semibold text-slate-700">Welke acties kun je nu meteen doen?</p>
+          <p className="text-sm font-semibold text-slate-700">Drie prioriteiten voor gesprek</p>
+          <p className="mt-1 text-xs text-slate-500">Gebaseerd op uw laagst ingeschatte clusters — bespreek met collega's of in uw team.</p>
           <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
             {quickActions.map((action) => (
               <li key={action}>{action}</li>
             ))}
           </ul>
           <div className="mt-5 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-900">
-            <p className="font-semibold">Advies en ondersteuning</p>
-            <p className="mt-1">
-              Neem contact op met het Lectoraat Ethisch Werken van Fontys voor begeleiding bij het verbeteren van uw
-              score.
-            </p>
+            <p className="font-semibold">Duiding en begeleiding</p>
+            <p className="mt-1">{COPY_ADVIES_LECTORAAT}</p>
             <a
               href="https://www.fontys.nl/Onderzoek/Ethisch-werken.htm"
               target="_blank"
@@ -284,22 +276,32 @@ export function ResultsPage({ onBack }: ResultsPageProps) {
               Naar Fontys Lectoraat Ethisch Werken
             </a>
           </div>
+
+          <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-700">
+            <p className="font-semibold text-slate-800">Vervolg</p>
+            <p className="mt-1">{COPY_TIP_COLLEGAS}</p>
+          </div>
+
+          <details className="mt-5 rounded-xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700">
+            <summary className="cursor-pointer font-semibold text-slate-800">{COPY_LEERGANG_TITEL}</summary>
+            <p className="mt-3">{COPY_LEERGANG_UITLEG}</p>
+          </details>
         </div>
 
         <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <label className="block text-sm font-medium print:hidden">Kernobservaties en verbeteracties</label>
+          <label className="block text-sm font-medium print:hidden">Eigen notities</label>
           <textarea
             rows={4}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Welke 2-3 interventies hebben volgens u nu prioriteit?"
+            placeholder={COPY_NOTES_PLACEHOLDER}
             data-pdf-hide
             className="mt-2 w-full resize-y rounded-xl border border-slate-300 px-3 py-2 text-sm focus:border-teal-600 focus:outline-none print:hidden"
           />
           <div data-pdf-print-only className="hidden">
-            <p className="text-sm font-semibold text-slate-700">Ingevulde interventies</p>
+            <p className="text-sm font-semibold text-slate-700">Ingevulde notities</p>
             <p className="mt-2 whitespace-pre-wrap text-sm text-slate-700">
-              {notes.trim().length > 0 ? notes : "Geen interventies ingevuld."}
+              {notes.trim().length > 0 ? notes : "Geen notities ingevuld."}
             </p>
           </div>
         </div>

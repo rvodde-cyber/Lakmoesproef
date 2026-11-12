@@ -28,6 +28,27 @@ body,
   }
 }
 
+@keyframes landing-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.landing-enter {
+  animation: landing-enter 400ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-enter {
+    animation: none;
+  }
+}
+
 @media print {
   @page {
     size: A4;
