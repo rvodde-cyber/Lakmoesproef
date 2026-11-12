@@ -1,12 +1,14 @@
 import { PageShell } from "../components/PageShell";
 import { isSupabaseConfigured } from "../lib/supabase";
 import {
-  COPY_INTRO_OPENING,
   COPY_INTRO_VERTRAULIJK,
   COPY_INTRO_WAT_IS_HET,
   COPY_LEERGANG_TITEL,
   COPY_LEERGANG_UITLEG,
 } from "../data/instrumentCopy";
+
+const COPY_MODE_CHOICE_SUBTITLE =
+  "Meet hoe de medewerkers van uw organisatie de ethische cultuur ervaren in ongeveer 10 minuten.";
 
 type ModeChoicePageProps = {
   onIndividual: () => void;
@@ -21,7 +23,7 @@ export function ModeChoicePage({ onIndividual, onTeamFacilitator, onTeamJoin }: 
     <PageShell
       eyebrow="Organisatiescan"
       title="De Morele Lakmoesproef"
-      subtitle={COPY_INTRO_OPENING}
+      subtitle={COPY_MODE_CHOICE_SUBTITLE}
     >
       <div className="mb-6 rounded-2xl border border-violet-100 bg-violet-50/60 p-5 text-sm leading-relaxed text-slate-700">
         <p>{COPY_INTRO_WAT_IS_HET}</p>

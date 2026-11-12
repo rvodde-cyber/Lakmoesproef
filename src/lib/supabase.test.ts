@@ -32,4 +32,12 @@ describe("getSupabase", () => {
     vi.stubEnv("VITE_SUPABASE_ANON_KEY", "");
     expect(() => getSupabase()).toThrow(/niet geconfigureerd/i);
   });
+
+  it("vertaalt een ongeldige Supabase-URL naar een nette teamsessie-melding", () => {
+    vi.stubEnv("VITE_SUPABASE_URL", "not-a-valid-url");
+    vi.stubEnv("VITE_SUPABASE_ANON_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test");
+
+    expect(() => getSupabase()).toThrow(/Teamsessies zijn nu niet beschikbaar/);
+    expect(() => getSupabase()).not.toThrow(/Invalid supabaseUrl/i);
+  });
 });

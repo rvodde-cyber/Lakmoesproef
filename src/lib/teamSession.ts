@@ -1,6 +1,10 @@
 import type { Pillar } from "../utils/assessment";
 import { PILLAR_LABELS_NL } from "../utils/assessment";
-import { getSupabase, isSupabaseConfigured } from "./supabase";
+import {
+  getSupabase,
+  isSupabaseConfigured,
+  TEAMS_UNAVAILABLE_USER_MESSAGE,
+} from "./supabase";
 
 export const PILLAR_LABELS = PILLAR_LABELS_NL;
 
@@ -61,18 +65,42 @@ export function teamScorePercent(pillars: Pillar[]): number {
   return Math.round((avg / 5) * 100);
 }
 
+function isInfrastructureError(message: string): boolean {
+  const m = message.toLowerCase();
+  return (
+    /invalid supabaseurl|must be a valid http|failed to fetch|networkerror|network error|fetch failed|load failed|econnrefused|etimedout|timeout exceeded/i.test(
+      m,
+    ) || m === TEAMS_UNAVAILABLE_USER_MESSAGE.toLowerCase()
+  );
+}
+
 function mapRpcError(message: string): string {
   const m = message.trim();
   if (/sessie niet gevonden/i.test(m)) return "Deze sessiecode bestaat niet.";
-  if (/ongeldige code/i.test(m)) return "Voer een geldige 4-cijferige sessiecode in.";
-  if (/niet 7 scores/i.test(m)) return "Er moeten precies 7 pijlerscores worden ingediend.";
-  if (/buiten\s*1\s*[-–]\s*5|score buiten/i.test(m)) {
+  if (/ongeldige (sessie)?code/i.test(m)) return "Voer een geldige 4-cijferige sessiecode in.";
+  if (/verwacht zeven scores|niet 7 scores/i.test(m)) {
+    return "Er moeten precies 7 pijlerscores worden ingediend.";
+  }
+  if (/scores moeten tussen 1 en 5|buiten\s*1\s*[-–]\s*5|score buiten/i.test(m)) {
     return "Elke pijlerscore moet tussen 1 en 5 liggen.";
   }
   if (/maximum aantal deelnemers/i.test(m)) {
     return "Er zijn al te veel deelnemers in deze sessie.";
   }
+  if (isInfrastructureError(m)) return TEAMS_UNAVAILABLE_USER_MESSAGE;
   return "Er ging iets mis, probeer het opnieuw.";
+}
+
+function obtainSupabase() {
+  try {
+    return getSupabase();
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (msg === TEAMS_UNAVAILABLE_USER_MESSAGE || isInfrastructureError(msg)) {
+      throw new Error(TEAMS_UNAVAILABLE_USER_MESSAGE);
+    }
+    throw err;
+  }
 }
 
 function parseTeamResultsPayload(data: unknown): TeamResults {
@@ -104,7 +132,7 @@ export async function createTeamSession(): Promise<string> {
     throw new Error("Supabase is niet geconfigureerd");
   }
 
-  const supabase = getSupabase();
+  const supabase = obtainSupabase();
   const { data, error } = await supabase.rpc("create_team_session");
 
   if (error) throw new Error(mapRpcError(error.message));
@@ -127,7 +155,7 @@ export async function getTeamResults(code: string): Promise<TeamResults> {
   if (!isSupabaseConfigured()) return missing;
   if (!/^\d{4}$/.test(code)) return missing;
 
-  const supabase = getSupabase();
+  const supabase = obtainSupabase();
   const { data, error } = await supabase.rpc("get_team_results", { session_code: code });
 
   if (error) throw new Error(mapRpcError(error.message));
@@ -153,7 +181,7 @@ export async function submitPillarScores(code: string, scores: number[]): Promis
     throw new Error("Elke pijlerscore moet tussen 1 en 5 liggen.");
   }
 
-  const supabase = getSupabase();
+  const supabase = obtainSupabase();
   const { error } = await supabase.rpc("submit_team_scores", {
     session_code: code,
     scores,

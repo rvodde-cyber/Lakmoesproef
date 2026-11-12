@@ -1,7 +1,3 @@
-/** Opening — landingspagina / start. */
-export const COPY_INTRO_OPENING =
-  "Organisaties praten vaak over waarden, maar minder concreet over hoe dat voelt in het dagelijks werk. De Lakmoesproef maakt dat bespreekbaar: geen audit, wel een reflectie-instrument en gespreksstarter. Verschil tussen mensen is juist interessant.";
-
 /** Algemene uitleg — standalone én leergang. */
 export const COPY_INTRO_WAT_IS_HET =
   "De Morele Lakmoesproef is een organisatiescan: 21 stellingen over hoe ethiek, cultuur, samenwerking en verantwoordelijkheid in uw organisatie in de praktijk spelen — volgens uw eigen inschatting, niet als externe audit.";

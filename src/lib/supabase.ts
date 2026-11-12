@@ -2,6 +2,9 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 const PLACEHOLDER_FRAGMENTS = ["your-project-ref", "your-anon-key-here"] as const;
 
+export const TEAMS_UNAVAILABLE_USER_MESSAGE =
+  "Teamsessies zijn nu niet beschikbaar. Probeer het later opnieuw of gebruik de individuele scan.";
+
 function readEnv() {
   const url = String(import.meta.env.VITE_SUPABASE_URL ?? "").trim();
   const anonKey = String(import.meta.env.VITE_SUPABASE_ANON_KEY ?? "").trim();
@@ -30,8 +33,12 @@ export function getSupabase(): SupabaseClient {
     );
   }
   if (!cachedClient) {
-    const { url, anonKey } = readEnv();
-    cachedClient = createClient(url, anonKey);
+    try {
+      const { url, anonKey } = readEnv();
+      cachedClient = createClient(url, anonKey);
+    } catch {
+      throw new Error(TEAMS_UNAVAILABLE_USER_MESSAGE);
+    }
   }
   return cachedClient;
 }

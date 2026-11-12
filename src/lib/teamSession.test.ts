@@ -5,6 +5,8 @@ const rpcMock = vi.fn();
 vi.mock("./supabase", () => ({
   isSupabaseConfigured: vi.fn(() => true),
   getSupabase: vi.fn(() => ({ rpc: rpcMock })),
+  TEAMS_UNAVAILABLE_USER_MESSAGE:
+    "Teamsessies zijn nu niet beschikbaar. Probeer het later opnieuw of gebruik de individuele scan.",
 }));
 
 import {
@@ -32,10 +34,19 @@ describe("createTeamSession", () => {
     expect(rpcMock).toHaveBeenCalledWith("create_team_session");
   });
 
-  it("vertaalt rpc-fouten", async () => {
-    rpcMock.mockResolvedValueOnce({ data: null, error: { message: "network" } });
+  it("vertaalt technische rpc-fouten", async () => {
+    rpcMock.mockResolvedValueOnce({ data: null, error: { message: "Failed to fetch" } });
 
-    await expect(createTeamSession()).rejects.toThrow(/Er ging iets mis/);
+    await expect(createTeamSession()).rejects.toThrow(/Teamsessies zijn nu niet beschikbaar/);
+  });
+
+  it("vertaalt Invalid supabaseUrl via rpc naar nette melding", async () => {
+    rpcMock.mockResolvedValueOnce({
+      data: null,
+      error: { message: "Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL." },
+    });
+
+    await expect(createTeamSession()).rejects.toThrow(/Teamsessies zijn nu niet beschikbaar/);
   });
 });
 
