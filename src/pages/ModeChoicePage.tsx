@@ -50,8 +50,8 @@ export function ModeChoicePage({ onIndividual, onTeamFacilitator, onTeamJoin }: 
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-lg font-semibold text-slate-900">Teamsessie</p>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
-              Iedereen vult individueel in; de begeleider ziet alleen anonieme gemiddelden per cluster — geen
-              individuele scores. Handig om in de zaal het teambeeld plenair te bespreken.
+              Iedereen vult individueel in; alleen zeven pijlerscores worden gedeeld. De begeleider ziet pas vanaf
+              vijf deelnemers anonieme groepsgemiddelden — geen namen en geen antwoorden per stelling.
             </p>
 
             <div className="mt-5 grid gap-3 sm:grid-cols-2">

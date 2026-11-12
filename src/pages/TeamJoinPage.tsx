@@ -85,8 +85,9 @@ export function TeamJoinPage({ onBack, onJoined }: TeamJoinPageProps) {
         </button>
 
         <p className="mt-4 text-xs leading-relaxed text-slate-500">
-          Privacy: bij voltooiing worden alleen uw 7 pijlergemiddelden anoniem gedeeld. Individuele antwoorden blijven
-          op uw apparaat en zijn niet zichtbaar voor de begeleider.
+          Privacy: bij voltooiing worden alleen uw zeven pijlerscores (geen namen, geen antwoorden per stelling)
+          anoniem verstuurd. Het teamresultaat is een groepsgemiddelde en wordt pas getoond vanaf vijf deelnemers.
+          Individuele antwoorden blijven op uw apparaat.
         </p>
       </form>
     </PageShell>

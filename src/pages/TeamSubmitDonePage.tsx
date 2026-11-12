@@ -10,7 +10,7 @@ export function TeamSubmitDonePage({ code, onHome }: TeamSubmitDonePageProps) {
     <PageShell
       eyebrow="Teamsessie"
       title="Bedankt — scores ingediend"
-      subtitle="Uw anonieme pijlergemiddelden zijn toegevoegd aan de teamsessie. De begeleider kan nu het gecombineerde teamprofiel bekijken."
+      subtitle="Uw zeven pijlerscores zijn anoniem toegevoegd. Het teamresultaat verschijnt pas wanneer minimaal vijf deelnemers hebben ingediend."
     >
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-sm text-emerald-900">
         <p>

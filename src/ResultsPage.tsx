@@ -24,30 +24,24 @@ type ResultsPageProps = {
 };
 
 export function ResultsPage({ onBack }: ResultsPageProps) {
-  const [hydrated, setHydrated] = useState(false);
-  const [organization, setOrganization] = useState("");
-  const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [notes, setNotes] = useState("");
-  const [questionPageIndex, setQuestionPageIndex] = useState(0);
+  const [restoredSession] = useState(() => loadSession());
+  const isRestoringRef = useRef(true);
+  const [organization, setOrganization] = useState(() => restoredSession?.organization ?? "");
+  const [answers, setAnswers] = useState<Record<number, number>>(() => restoredSession?.answers ?? {});
+  const [notes, setNotes] = useState(() => restoredSession?.notes ?? "");
+  const [questionPageIndex, setQuestionPageIndex] = useState(() => restoredSession?.questionPageIndex ?? 0);
   const [pdfBusy, setPdfBusy] = useState(false);
   const [pdfError, setPdfError] = useState<string | null>(null);
   const pdfExportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const saved = loadSession();
-    if (saved) {
-      setOrganization(saved.organization ?? "");
-      setAnswers(saved.answers ?? {});
-      setNotes(saved.notes ?? "");
-      setQuestionPageIndex(saved.questionPageIndex ?? 0);
-    }
-    setHydrated(true);
+    isRestoringRef.current = false;
   }, []);
 
   useEffect(() => {
-    if (!hydrated) return;
+    if (isRestoringRef.current) return;
     saveSession({ organization, answers, notes, questionPageIndex });
-  }, [hydrated, organization, answers, notes, questionPageIndex]);
+  }, [organization, answers, notes, questionPageIndex]);
 
   const completed = Object.keys(answers).length;
   const isComplete = completed === questions.length;

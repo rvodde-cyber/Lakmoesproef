@@ -39,11 +39,14 @@ export default function App({
   teamCode,
   onOpenResults = () => {},
 }: AppProps) {
-  const [organization, setOrganization] = useState("");
-  const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [notes, setNotes] = useState("");
-  const [started, setStarted] = useState(false);
-  const [questionPageIndex, setQuestionPageIndex] = useState(0);
+  const [restoredSession] = useState(() => loadSession());
+  const [organization, setOrganization] = useState(() => restoredSession?.organization ?? "");
+  const [answers, setAnswers] = useState<Record<number, number>>(() => restoredSession?.answers ?? {});
+  const [notes, setNotes] = useState(() => restoredSession?.notes ?? "");
+  const [started, setStarted] = useState(
+    () => Object.keys(restoredSession?.answers ?? {}).length > 0,
+  );
+  const [questionPageIndex, setQuestionPageIndex] = useState(() => restoredSession?.questionPageIndex ?? 0);
   const [teamSubmitting, setTeamSubmitting] = useState(false);
   const [teamSubmitError, setTeamSubmitError] = useState<string | null>(null);
 
@@ -74,7 +77,7 @@ export default function App({
 
   const litmus = useMemo(
     () => calculateLitmus(answers, completed, questions.length),
-    [answers, completed, questions.length]
+    [answers, completed],
   );
 
   const handleTeamSubmit = async () => {
@@ -97,16 +100,6 @@ export default function App({
   };
 
   useEffect(() => {
-    const saved = loadSession();
-    if (saved) {
-      setOrganization(saved.organization ?? "");
-      setAnswers(saved.answers ?? {});
-      setNotes(saved.notes ?? "");
-      setQuestionPageIndex(saved.questionPageIndex ?? 0);
-      if (Object.keys(saved.answers ?? {}).length > 0) {
-        setStarted(true);
-      }
-    }
     isRestoringRef.current = false;
   }, []);
 
@@ -129,7 +122,7 @@ export default function App({
 
           <p className="mt-2 text-sm leading-relaxed text-slate-600">
             {isTeamMode
-              ? `Teamsessie ${teamCode} — vul de scan individueel in. Alleen anonieme pijlergemiddelden worden gedeeld met de begeleider.`
+              ? `Teamsessie ${teamCode} — vul de scan individueel in. Alleen uw zeven pijlerscores worden anoniem verstuurd; het teamresultaat is vanaf vijf deelnemers zichtbaar.`
               : COPY_INTRO_WAT_IS_HET}
           </p>
 

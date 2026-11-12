@@ -24,7 +24,7 @@ export function PageShell({ children, eyebrow, title, subtitle }: PageShellProps
         {children}
         <footer className="mt-10 text-center text-xs leading-relaxed text-slate-500">
           {supabaseReady
-            ? "Individuele antwoorden blijven lokaal in uw browser. In teamsessies worden alleen geaggregeerde pijlerscores gedeeld via de beveiligde backend."
+            ? "Individuele antwoorden blijven lokaal in uw browser. In teamsessies worden alleen zeven pijlerscores verstuurd — geen namen, geen antwoorden per stelling. Teamresultaten zijn groepsgemiddelden vanaf vijf deelnemers. Sessies worden na 30 dagen verwijderd."
             : "Antwoorden blijven lokaal in uw browser."}
         </footer>
       </div>
