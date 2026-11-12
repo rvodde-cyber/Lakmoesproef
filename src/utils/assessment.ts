@@ -5,6 +5,17 @@ export type Pillar = {
   avg: number;
 };
 
+/** Leesbare clusternamen — geen 7S-jargon voor deelnemers. */
+export const PILLAR_LABELS_NL = [
+  "Waarden & visie",
+  "Strategie & richting",
+  "Structuur & rollen",
+  "Systemen & opvolging",
+  "Mensen & ontwikkeling",
+  "Cultuur & veiligheid",
+  "Moreel vakmanschap",
+] as const;
+
 const STORAGE_KEY = "organisatie-lakmoesproef-session-v1";
 
 /**
@@ -43,8 +54,7 @@ export function calculateScore(answers: Record<number, number>, totalQuestions: 
 }
 
 export function calculatePillars(answers: Record<number, number>): Pillar[] {
-  const labels = ["Shared Values", "Strategy", "Structure", "Systems", "Staff", "Style", "Skills"];
-  return labels.map((label, index) => {
+  return PILLAR_LABELS_NL.map((label, index) => {
     const start = index * 3 + 1;
     const ids = [start, start + 1, start + 2];
     const values = ids.map((id) => answers[id]).filter((v): v is number => typeof v === "number");
@@ -56,13 +66,19 @@ export function calculatePillars(answers: Record<number, number>): Pillar[] {
 export function calculateQuickActions(pillars: Pillar[]): string[] {
   const lowest = [...pillars].sort((a, b) => a.avg - b.avg).slice(0, 3);
   return lowest.map((item) => {
-    if (item.label === "Shared Values") return "Plan een teamsessie waarin waarden worden vertaald naar concreet gedrag en besluitcriteria.";
-    if (item.label === "Strategy") return "Toets lopende strategische keuzes op maatschappelijke impact en lange-termijn effecten.";
-    if (item.label === "Structure") return "Herijk rollen en verantwoordelijkheden rond ethische besluitvorming in elke laag.";
-    if (item.label === "Systems") return "Bouw een vaste cyclus voor signaleren, evalueren en opvolgen van ethische risico's.";
-    if (item.label === "Staff") return "Start gerichte ontwikkeling op morele oordeelsvorming voor sleutelrollen.";
-    if (item.label === "Style") return "Versterk psychologische veiligheid door structurele dialoog en zichtbaar voorbeeldgedrag.";
-    return "Ontwikkel trainingsmodules op integriteit, aanspreekcultuur en professionele reflectie.";
+    if (item.label === "Waarden & visie")
+      return "Waarden & visie — bespreek: welke waarden zijn in de praktijk zichtbaar, en waar wringt het?";
+    if (item.label === "Strategie & richting")
+      return "Strategie & richting — bespreek: welke keuzes wegen maatschappelijke impact écht mee?";
+    if (item.label === "Structuur & rollen")
+      return "Structuur & rollen — bespreek: wie draagt verantwoordelijkheid voor ethische kwaliteit, en is dat helder?";
+    if (item.label === "Systemen & opvolging")
+      return "Systemen & opvolging — bespreek: wat gebeurt er met signalen en meldingen in de praktijk?";
+    if (item.label === "Mensen & ontwikkeling")
+      return "Mensen & ontwikkeling — bespreek: waar is ruimte om moreel oordeelsvermogen te oefenen?";
+    if (item.label === "Cultuur & veiligheid")
+      return "Cultuur & veiligheid — bespreek: voelen mensen zich vrij genoeg om twijfel en zorgen te benoemen?";
+    return "Moreel vakmanschap — bespreek: hoe wordt ethisch handelen geleerd, geoefend en voorgeleefd?";
   });
 }
 
@@ -92,13 +108,13 @@ export function calculateLitmus(
   const avgLabel = avg.toFixed(1);
   let statusLabel: string;
   if (avg <= 2.0) {
-    statusLabel = `Gemiddelde score ${avgLabel}/5 — het buisje kleurt rood. Er zijn veel verbeterpunten.`;
+    statusLabel = `Gemiddelde ${avgLabel}/5 — rood: u ziet op meerdere punten weinig van wat beschreven staat.`;
   } else if (avg <= 3.0) {
-    statusLabel = `Gemiddelde score ${avgLabel}/5 — het buisje kleurt oranje. Er is ruimte voor verbetering.`;
+    statusLabel = `Gemiddelde ${avgLabel}/5 — oranje: deels aanwezig, met duidelijke aandachtspunten.`;
   } else if (avg <= 4.0) {
-    statusLabel = `Gemiddelde score ${avgLabel}/5 — het buisje kleurt geel-groen. Richting een gezonde praktijk.`;
+    statusLabel = `Gemiddelde ${avgLabel}/5 — geel-groen: veel herkenbaar, met enkele kansen om te versterken.`;
   } else {
-    statusLabel = `Gemiddelde score ${avgLabel}/5 — het buisje kleurt groen. Sterke ethische praktijk zichtbaar.`;
+    statusLabel = `Gemiddelde ${avgLabel}/5 — groen: u ervaart veel van wat beschreven staat als sterk aanwezig.`;
   }
 
   return { fillRatio, liquidColor, statusLabel };

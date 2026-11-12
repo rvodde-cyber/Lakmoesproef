@@ -31,10 +31,10 @@ describe("calculateLitmus", () => {
     expect(result.fillRatio).toBe(0);
   });
 
-  it("gets redder when low answers (1-2) increase", () => {
+  it("gets redder when average score is lower", () => {
     const mostlyHigh = calculateLitmus({ 1: 5, 2: 4, 3: 3, 4: 5 }, 4, 21);
     const manyLow = calculateLitmus({ 1: 1, 2: 2, 3: 1, 4: 5 }, 4, 21);
     expect(mostlyHigh.liquidColor).not.toEqual(manyLow.liquidColor);
-    expect(manyLow.statusLabel).toContain("1 of 2");
+    expect(manyLow.statusLabel).toMatch(/oranje|rood/);
   });
 });
