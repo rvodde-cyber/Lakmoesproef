@@ -10,30 +10,50 @@ import { TeamResultsPage } from "./pages/TeamResultsPage.tsx";
 import { TeamSubmitDonePage } from "./pages/TeamSubmitDonePage.tsx";
 import { clearSession, loadSession } from "./utils/assessment.ts";
 import { clearTeamContext, loadTeamContext } from "./lib/teamSession.ts";
-
-function normalizePath(pathname: string): string {
-  return pathname.replace(/\/+$/, "") || "/";
-}
+import { isSupabaseConfigured } from "./lib/supabase.ts";
+import { normalizeAppPath, redirectTargetWithoutSupabase } from "./lib/routing.ts";
 
 function teamResultsCode(path: string): string | null {
   const match = path.match(/^\/teamsessie\/resultaten\/(\d{4})$/);
   return match?.[1] ?? null;
 }
 
+function RouteRedirect({
+  to,
+  navigate,
+}: {
+  to: string;
+  navigate: (to: string) => void;
+}) {
+  useEffect(() => {
+    navigate(to);
+  }, [to, navigate]);
+  return null;
+}
+
 function Root() {
-  const [path, setPath] = useState(() => normalizePath(window.location.pathname));
+  const [path, setPath] = useState(() => normalizeAppPath(window.location.pathname));
 
   useEffect(() => {
-    const onPop = () => setPath(normalizePath(window.location.pathname));
+    const onPop = () => setPath(normalizeAppPath(window.location.pathname));
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
   const navigate = useCallback((to: string) => {
     window.history.pushState({}, "", to);
-    setPath(normalizePath(to));
+    setPath(normalizeAppPath(to));
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
+
+  const supabaseReady = isSupabaseConfigured();
+  const saved = loadSession();
+  const hasIndividualProgress = Boolean(saved?.answers && Object.keys(saved.answers).length > 0);
+
+  const redirectTarget = redirectTargetWithoutSupabase(path, supabaseReady, hasIndividualProgress);
+  if (redirectTarget) {
+    return <RouteRedirect to={redirectTarget} navigate={navigate} />;
+  }
 
   const resultsCode = teamResultsCode(path);
 
@@ -41,7 +61,7 @@ function Root() {
     return <ResultsPage onBack={() => navigate("/scan")} />;
   }
 
-  if (path === "/teamsessie/begeleider") {
+  if (supabaseReady && path === "/teamsessie/begeleider") {
     return (
       <TeamFacilitatorPage
         onBack={() => navigate("/")}
@@ -50,7 +70,7 @@ function Root() {
     );
   }
 
-  if (path === "/teamsessie/deelnemen") {
+  if (supabaseReady && path === "/teamsessie/deelnemen") {
     return (
       <TeamJoinPage
         onBack={() => navigate("/")}
@@ -59,7 +79,7 @@ function Root() {
     );
   }
 
-  if (path === "/teamsessie/klaar") {
+  if (supabaseReady && path === "/teamsessie/klaar") {
     const team = loadTeamContext();
     return (
       <TeamSubmitDonePage
@@ -73,7 +93,7 @@ function Root() {
     );
   }
 
-  if (resultsCode) {
+  if (supabaseReady && resultsCode) {
     return (
       <TeamResultsPage
         code={resultsCode}
@@ -82,7 +102,7 @@ function Root() {
     );
   }
 
-  if (path === "/teamsessie/scan") {
+  if (supabaseReady && path === "/teamsessie/scan") {
     const team = loadTeamContext();
     if (!team || team.submitted) {
       return (
@@ -106,9 +126,6 @@ function Root() {
   if (path === "/scan") {
     return <App mode="individual" onOpenResults={() => navigate("/resultaten")} />;
   }
-
-  const saved = loadSession();
-  const hasIndividualProgress = Boolean(saved?.answers && Object.keys(saved.answers).length > 0);
 
   if (path === "/" && hasIndividualProgress) {
     return <App mode="individual" onOpenResults={() => navigate("/resultaten")} />;
